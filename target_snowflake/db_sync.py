@@ -6,7 +6,7 @@ import snowflake.connector
 import re
 import time
 
-from singer import get_logger
+from singer import get_logger, logger
 from target_snowflake import flattening
 from target_snowflake import stream_utils
 from target_snowflake.file_format import FileFormat, FileFormatTypes
@@ -240,6 +240,10 @@ class DbSync:
             config_schema_mapping = self.connection_config.get('schema_mapping', {})
 
             stream_name = stream_schema_message['stream']
+            
+            self.logger.info('***BROSE*** stream_name:')
+            self.logger.info(stream_name)
+
             stream_schema_name = stream_utils.stream_name_to_dict(stream_name)['schema_name']
             if config_schema_mapping and stream_schema_name in config_schema_mapping:
                 self.schema_name = config_schema_mapping[stream_schema_name].get('target_schema')
